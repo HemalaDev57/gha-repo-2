@@ -1,0 +1,23 @@
+name: Build and Publish Artifact
+ 
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write 
+  packages: write
+  
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Register Build Artifact
+        uses: cloudbees-gha-cbp/register-build-artifact@main
+        with:
+          name: "gha-service"
+          version: "1.0.0"
+          url: "docker.io/hdev/gha-service:1.0.0"
+          digest: "${{ steps.image-digest.outputs.digest }}"
+          type: "docker"
+          cloudbees-url: "https://api.cloudbees.io"
+          cloudbees-pat: ${{ secrets.CBP_PAT }}
